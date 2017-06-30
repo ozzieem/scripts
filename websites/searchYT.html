@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <title>Search Youtube</title>
+
+    <style>
+        .container {
+            font-family: Calibri;
+        }
+
+        #filearea,
+        #textbox {
+            display: table;
+            margin: 0 auto;
+        }
+
+        #entrylist {
+            font-family: Verdana;
+            display: none;
+        }
+    </style>
+    <script type="text/javascript" src="../src_js/searchYT.js"></script>
+</head>
+
+<body>
+    <div class="container" align="center">
+        <div id="info">
+            <h2>Mass Search Youtube</h2>
+            <p>Provides YouTube-links for your search words. </p>
+            <p><b>Add each word to a new line in the textfield or open a .txt file with the desired words</b></p>
+        </div>
+        <div id="filearea"><input type="file" id="file" /></div>
+        <br>
+        <div id="textbox">
+            <textarea id="inputtext" rows="4" cols="50" placeholder="Enter your search word here..."></textarea><br>
+            <input type="submit" id="entertext" />
+        </div>
+
+        <div id="entrylist" align="left">
+            <input id="openlinks" type="button" value="Open all links" />
+            <output id="list"></output>
+        </div>
+    </div>
+    <script>
+        document.getElementById("file").addEventListener("change", fileSelect);
+        document.getElementById("entertext").addEventListener("click", readText);
+        document.getElementById("openlinks").addEventListener("click", openLinks);
+    </script>
+</body>
+
+</html>

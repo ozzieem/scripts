@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <title>Open Multiple Links</title>
+
+    <style>
+        .container {
+            font-family: Calibri;
+        }
+
+        #filearea,
+        #textbox {
+            display: table;
+            margin: 0 auto;
+        }
+
+        #entrylist {
+            font-family: Verdana;
+            display: none;
+        }
+    </style>
+    <script type="text/javascript" src="../src_js/searchWeb.js"></script>
+</head>
+
+<body>
+    <div class="container" align="center">
+        <div id="info">
+            <h2>Open Multiple Links</h2>
+            <p>Enter one or more URL addresses to open for you instead of opening a new tab and pasting it in by yourself.</p>
+            <p><b>Add each URL to a new line</b></p>
+        </div>
+        <br>
+        <div id="textbox">
+            <textarea id="inputtext" rows="4" cols="50" placeholder="Enter your URL here..."></textarea><br>
+            <input type="submit" id="entertext" />
+        </div>
+
+        <div id="entrylist" align="left">
+            <input id="openlinks" type="button" value="Open all links" />
+            <output id="list"></output>
+        </div>
+    </div>
+    <script>
+        document.getElementById('entertext').addEventListener('click', readText);
+        document.getElementById('openlinks').addEventListener('click', openLinks);
+    </script>
+</body>
+
+</html>
