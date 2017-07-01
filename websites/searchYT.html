@@ -33,12 +33,14 @@
             <p>Provides YouTube-links for your search words. </p>
             <p><b>Add each word to a new line in the textfield or open a .txt file with the desired words</b></p>
         </div>
-        <div id="filearea"><input type="file" id="file" /></div>
-        <br>
+
         <div id="textbox">
-            <textarea id="inputtext" rows="4" cols="50" placeholder="Enter your search word here..."></textarea><br>
-            <input type="submit" id="entertext" />
+            <textarea id="inputtext" rows="4" cols="55" placeholder="Enter your search word here or upload a txt file..."></textarea><br>
+            <div id="filearea"><input type="file" id="file" value=".txt" /></div>
+            <br>
+
         </div>
+        <input type="submit" id="entertext" />
 
         <div id="entrylist" align="left">
             <input id="openlinks" type="button" value="Open all links" />
