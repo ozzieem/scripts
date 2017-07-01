@@ -74,7 +74,7 @@ function convertText() {
 
   if (preprocessed_text == "") {
     document.getElementById("convertedValue").innerHTML =
-      "<h2> Enter a value </>";
+      "<h2><font color='red'>Enter a value!</font></h2>";
   } else {
     var isPhoneticChosen = document.getElementById("ToPhonetic").checked;
     if (isPhoneticChosen) {

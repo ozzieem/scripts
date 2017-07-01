@@ -3,7 +3,15 @@ var contents_list;
 
 function readText() {
   var text = document.getElementById("inputtext").value;
-  generateContent(text);
+  if (text == "") {
+    document.getElementById("submitError").innerHTML =
+      "<h2><font color='red'>Enter a value!</font></h2>";
+    document.getElementById("submitError").style.display = "block";
+    document.getElementById("entrylist").style.display = "none";
+  } else {
+    document.getElementById("submitError").style.display = "none";
+    generateContent(text);
+  }
 }
 
 function generateContent(textContent) {

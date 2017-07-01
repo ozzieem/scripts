@@ -29,7 +29,7 @@
 <body>
     <div class="container" align="center">
         <div id="info">
-            <h2>Mass Search Youtube</h2>
+            <h2>Search Youtube</h2>
             <p>Provides YouTube-links for your search words. </p>
             <p><b>Add each word to a new line in the textfield or open a .txt file with the desired words</b></p>
         </div>
@@ -40,7 +40,11 @@
             <br>
 
         </div>
-        <input type="submit" id="entertext" />
+        <div>
+            <input type="submit" id="entertext" onclick="readText()" />
+            <div id="submitError">
+            </div>
+        </div>
 
         <div id="entrylist" align="left">
             <input id="openlinks" type="button" value="Open all links" />
@@ -49,7 +53,6 @@
     </div>
     <script>
         document.getElementById("file").addEventListener("change", fileSelect);
-        document.getElementById("entertext").addEventListener("click", readText);
         document.getElementById("openlinks").addEventListener("click", openLinks);
     </script>
 </body>

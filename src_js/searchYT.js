@@ -23,6 +23,7 @@ function fileSelect(evt) {
   } catch (err) {
     alert(err);
   }
+  return;
 }
 
 function readFile(file) {
@@ -49,7 +50,15 @@ function readFile(file) {
 
 function readText() {
   var text = document.getElementById("inputtext").value;
-  generateContent(text);
+  if (text == "") {
+    document.getElementById("submitError").innerHTML =
+      "<h2><font color='red'>Enter a value or upload a file!</font></h2>";
+    document.getElementById("submitError").style.display = "block";
+    document.getElementById("entrylist").style.display = "none";
+  } else {
+    document.getElementById("submitError").style.display = "none";
+    generateContent(text);
+  }
 }
 
 function generateContent(textContent) {
@@ -70,8 +79,9 @@ function generateLinks() {
     var url = createURL(contents_list[name]);
     output += "<li><a href=" + url + " target='_blank'>" + url + "</a></li>";
   }
+  // Displays list of searches
   document.getElementById("list").innerHTML = "</ul>" + output + "</ul>";
-  document.getElementById("entrylist").style.display = "block"; // Displays list of searches
+  document.getElementById("entrylist").style.display = "block";
 }
 
 function createURL(entry) {

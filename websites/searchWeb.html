@@ -12,7 +12,6 @@
             font-family: Calibri;
         }
 
-        #filearea,
         #textbox {
             display: table;
             margin: 0 auto;
@@ -36,7 +35,11 @@
         <br>
         <div id="textbox">
             <textarea id="inputtext" rows="4" cols="50" placeholder="Enter your URL here..."></textarea><br>
+        </div>
+        <div>
             <input type="submit" id="entertext" />
+            <div id="submitError">
+            </div>
         </div>
 
         <div id="entrylist" align="left">

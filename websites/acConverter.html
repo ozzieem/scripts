@@ -11,17 +11,6 @@
         .container {
             font-family: Calibri;
         }
-
-        #filearea,
-        #textbox {
-            display: table;
-            margin: 0 auto;
-        }
-
-        #entrylist {
-            font-family: Verdana;
-            display: none;
-        }
     </style>
     <script type="text/javascript" src="../src_js/acConverter.js"></script>
 </head>
@@ -34,10 +23,10 @@
         </div>
         <br>
         <div id="textbox">
-            <input id="inputtext" type="text" style="width:300px; height:20px;" placeholder="e.g 'BAC749'"></input><br><br>
-            <div>
+            <input id="inputtext" type="text" style="width:500px; height:20px;" placeholder="e.g 'BAC749'"></input><br><br>
+            <div onclick="changePlaceholderText()">
                 <label><input type="radio" name="type" id="ToPhonetic" checked="checked">To Phonetic</label><br>
-                <label><input type="radio" name="type" id="FromPhonetic" >From Phonetic</label><br><br>
+                <label><input type="radio" name="type" id="FromPhonetic">From Phonetic</label><br><br>
             </div>
             <input type="submit" id="entertext" value="Convert" onclick="convertText()" />
         </div>
