@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <title>String Converter</title>
+
+    <style>
+        .container {
+            font-family: Calibri;
+        }
+    </style>
+    <script type="text/javascript" src="../src_js/stringConverter.js"></script>
+</head>
+
+<body>
+    <div class="container" align="center">
+        <div id="info">
+            <h2>String Converter</h2>
+            <p>Convert strings to ASCII or Hex.</p>
+        </div>
+        <br>
+        <div id="textbox">
+            <input id="inputtext" type="text" style="width:500px; height:20px;" placeholder="e.g 'Hello World'"></input><br><br>
+            <div onclick="changePlaceholderText()">
+                <label><input type="radio" name="type" id="StringToASCII" checked="checked">String To ASCII</label><br>
+                <label><input type="radio" name="type" id="ASCIIToHex">ASCII To Hex</label><br>
+                <label><input type="radio" name="type" id="HexToString">Hex to String</label><br><br>
+            </div>
+            <input type="submit" id="entertext" value="Convert" onclick="convertText()" />
+        </div>
+        <div id="convertedValue"> </div>
+    </div>
+    <script>
+
+    </script>
+</body>
+
+</html>

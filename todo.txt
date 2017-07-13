@@ -1,0 +1,3 @@
+Ideas:
+|_-> Hex decoder to ASCII (Structure done, just need to add the control character from Hex to String
+|_-> Color representation, hex and such
