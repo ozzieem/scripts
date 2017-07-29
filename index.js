@@ -22,3 +22,9 @@ function openINC() {
   document.getElementById("center").innerHTML =
     '<object type="text/html" data="incremental/incremental.html" width=100% height=100%></object>';
 }
+
+
+// DEBUG
+window.onload = function() {
+  openINC();
+};

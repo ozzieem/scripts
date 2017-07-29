@@ -1,19 +1,45 @@
-var automators = 0;
-var quarries = 0;
-var recyclers = 0;
-var fabricators = 0;
+/// Simulation variables
+var time = 0.0;
+const deltaTime = 1.0 / 60.0;
 
-var items = 0;
-var scraps = 0;
-var UUmatter = 0;
-var gameTick = 50;
+/// Game variables
+var total_automators = 0;
+var total_quarries = 0;
+var total_recyclers = 0;
+var total_fabricators = 0;
 
-//var machines = { Automators: 0, Quarries: 0, Recyclers: 0, Fabricators: 0 };
+var total_items = 0;
+var total_scraps = 0;
+var total_UUmatter = 0;
+
+
+/// Parameters
+var AUTOMATOR_STRING_NAME = "Automator";
+var AUTOMATOR_START_COST = 10;
+var AUTOMATOR_COST_INCREASING_FACTOR = 1.1;
+
+var QUARRY_STRING_NAME = "Quarry";
+var QUARRY_START_COST = 1000;
+var QUARRY_COST_INCREASING_FACTOR = 1.15;
+
+var RECYCLER_STRING_NAME = "Recycler";
+var RECYCLER_START_COST = 10000;
+var RECYCLER_COST_INCREASING_FACTOR = 1.2;
+
+var FABRICATOR_STRING_NAME = "Fabricator";
+var FABRICATOR_START_COST = 100000;
+var FABRICATOR_COST_INCREASING_FACTOR = 1.5;
+var FABRICATOR_MAX_PROGRESS = 100;
+
+
+
+// var machines = { total_automators: 0, total_quarries: 0, total_recyclers: 0, total_fabricators: 0 };
 
 function Machine(name, startCost, costIncFactor) {
   this.name = name;
   this.startCost = startCost;
   this.costIncFactor = costIncFactor;
+  this.progress = 0;
 
   this.cost = function(machines) {
     return Math.floor(this.startCost * Math.pow(this.costIncFactor, machines));
@@ -21,8 +47,8 @@ function Machine(name, startCost, costIncFactor) {
 
   this.buy = function(quantity, machines) {
     for (i = 0; i < quantity; i++) {
-      if (items >= this.cost(machines)) {
-        items -= this.cost(machines);
+      if (total_items >= this.cost(machines)) {
+        total_items -= this.cost(machines);
         machines++;
       }
     }
@@ -30,67 +56,66 @@ function Machine(name, startCost, costIncFactor) {
   };
 }
 
-var automator = new Machine("Automator", 10, 1.1);
+var automator = new Machine(AUTOMATOR_STRING_NAME, AUTOMATOR_START_COST, AUTOMATOR_COST_INCREASING_FACTOR);
 automator.update = function() {
-  items += updateValue(automators * 2);
+  total_items += updateValue(total_automators * 2);
 };
 
-var quarry = new Machine("Quarry", 1000, 1.15);
+var quarry = new Machine(QUARRY_STRING_NAME, QUARRY_START_COST, QUARRY_COST_INCREASING_FACTOR);
 quarry.update = function() {
-  items += updateValue(Math.pow(quarries, 2));
+  total_items += updateValue(Math.pow(total_quarries, 2));
 };
 
-var recycler = new Machine("Recycler", 10000, 1.2);
+var recycler = new Machine(RECYCLER_STRING_NAME, RECYCLER_START_COST, RECYCLER_COST_INCREASING_FACTOR);
 recycler.update = function() {
-  var itemsPerScrap = updateValue(10 * recyclers);
-  if (items - itemsPerScrap > 0) {
-    scraps += updateValue(recyclers);
-    items -= updateValue(itemsPerScrap);
+  var itemsPerScrap = updateValue(10 * total_recyclers);
+  if (total_items - itemsPerScrap > 0) {
+    total_scraps += updateValue(total_recyclers);
+    total_items -= updateValue(itemsPerScrap);
   }
 };
 
-var fabricator = new Machine("Fabricator", 100000, 1.5);
-fabricator.progress = 0;
+var fabricator = new Machine(FABRICATOR_STRING_NAME, FABRICATOR_START_COST, FABRICATOR_COST_INCREASING_FACTOR);
 fabricator.update = function() {
-  var scrapsToMatter = updateValue(2 * fabricators);
-  if (scraps - scrapsToMatter > 0) {
-    scraps -= scrapsToMatter;
-    fabricator.progress += parseFloat(0.1 * fabricators);
+  var scrapsToMatter = updateValue(2 * total_fabricators);
+  if (total_scraps - scrapsToMatter > 0) {
+    total_scraps -= scrapsToMatter;
+    fabricator.progress += parseFloat(0.1 * total_fabricators);
   }
-  if (fabricator.progress >= 100) {
-    UUmatter++;
+  if (fabricator.progress >= FABRICATOR_MAX_PROGRESS) {
+    total_UUmatter++;
     fabricator.progress = 0;
   }
 };
 
 function updateValue(factor) {
-  return factor / gameTick;
+  return factor * deltaTime;
 }
 
 function add(numb) {
-  items += parseInt(numb);
+  total_items += parseInt(numb);
 }
 
 function buyAutomator(number) {
-  automators = automator.buy(number, automators);
+  total_automators = automator.buy(number, total_automators);
 }
 
 function buyQuarry(number) {
-  quarries = quarry.buy(number, quarries);
+  total_quarries = quarry.buy(number, total_quarries);
 }
 
 function buyRecycler(number) {
-  recyclers = recycler.buy(number, recyclers);
+  total_recyclers = recycler.buy(number, total_recyclers);
 }
 
 function buyFabricator(number) {
-  fabricators = fabricator.buy(number, fabricators);
+  total_fabricators = fabricator.buy(number, total_fabricators);
 }
 
 function getAvailableMachines(machine, machines) {
   var totalCost = 0;
   var availableMachines = 0;
-  var local_items = items;
+  var local_items = total_items;
 
   while (local_items >= totalCost) {
     totalCost += machine.cost(machines);
@@ -107,17 +132,17 @@ function getAvailableMachines(machine, machines) {
 }
 
 function resetGame() {
-  items = 0;
-  scraps = 0;
-  UUmatter = 0;
+  total_items = 0;
+  total_scraps = 0;
+  total_UUmatter = 0;
 
-  automators = 0;
-  quarries = 0;
-  recyclers = 0;
-  fabricators = 0;
+  total_automators = 0;
+  total_quarries = 0;
+  total_recyclers = 0;
+  total_fabricators = 0;
 }
 
-function gameLoop() {
+function updateMachines() {
   automator.update();
   quarry.update();
   recycler.update();
@@ -125,44 +150,36 @@ function gameLoop() {
 }
 
 function updateScreenValues() {
-  document.getElementById("items").innerHTML = Math.floor(items);
-  document.getElementById("scraps").innerHTML = Math.floor(scraps);
-  document.getElementById("UUmatter").innerHTML = UUmatter;
+  document.getElementById("total_items").innerHTML = Math.floor(total_items);
+  document.getElementById("total_scraps").innerHTML = Math.floor(total_scraps);
+  document.getElementById("total_UUmatter").innerHTML = total_UUmatter;
+  
+  document.getElementById("time").innerHTML = parseFloat(time).toFixed(3);
+  
+  document.getElementById("total_automators").innerHTML = total_automators;
+  document.getElementById("total_quarries").innerHTML = total_quarries;
+  document.getElementById("total_recyclers").innerHTML = total_recyclers;
+  document.getElementById("total_fabricators").innerHTML = total_fabricators;
 
-  document.getElementById("automators").innerHTML = automators;
-  document.getElementById("quarries").innerHTML = quarries;
-  document.getElementById("recyclers").innerHTML = recyclers;
-  document.getElementById("fabricators").innerHTML = fabricators;
+  document.getElementById("automatorCost").innerHTML = automator.cost(total_automators);
+  document.getElementById("quarryCost").innerHTML = quarry.cost(total_quarries);
+  document.getElementById("recyclerCost").innerHTML = recycler.cost(total_recyclers);
+  document.getElementById("fabricatorCost").innerHTML = fabricator.cost(total_fabricators);
 
-  document.getElementById("automatorCost").innerHTML = automator.cost(
-    automators
-  );
-  document.getElementById("quarryCost").innerHTML = quarry.cost(quarries);
-  document.getElementById("recyclerCost").innerHTML = recycler.cost(recyclers);
-  document.getElementById("fabricatorCost").innerHTML = fabricator.cost(
-    fabricators
-  );
+  document.getElementById("availableAutomators").innerHTML = getAvailableMachines(automator, total_automators);
+  document.getElementById("availableQuarries").innerHTML = getAvailableMachines(quarry,total_quarries);
+  document.getElementById("availableRecyclers").innerHTML = getAvailableMachines(recycler, total_recyclers);
+  document.getElementById("availableFabricators").innerHTML = getAvailableMachines(fabricator, total_fabricators);
 
-  document.getElementById(
-    "availableAutomators"
-  ).innerHTML = getAvailableMachines(automator, automators);
-  document.getElementById("availableQuarries").innerHTML = getAvailableMachines(
-    quarry,
-    quarries
-  );
-  document.getElementById(
-    "availableRecyclers"
-  ).innerHTML = getAvailableMachines(recycler, recyclers);
-  document.getElementById(
-    "availableFabricators"
-  ).innerHTML = getAvailableMachines(fabricator, fabricators);
+  document.getElementById("fabricatorProgress").innerHTML = Math.floor(fabricator.progress);
+}
 
-  document.getElementById("fabricatorProgress").innerHTML = Math.floor(
-    fabricator.progress
-  );
+function step() {
+	time += deltaTime;
 }
 
 window.setInterval(function() {
-  gameLoop();
+  updateMachines();
   updateScreenValues();
-}, 50);
+  step();
+}, deltaTime);
