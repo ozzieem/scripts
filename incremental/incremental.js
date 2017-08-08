@@ -12,7 +12,6 @@ var totalItems = 0;
 var totalScraps = 0;
 var totalUUmatter = 0;
 
-
 /// Parameters
 var AUTOMATOR_STRING_NAME = "Automator";
 var AUTOMATOR_START_COST = 10;
@@ -31,7 +30,7 @@ var FABRICATOR_START_COST = 10000;
 var FABRICATOR_COST_INCREASING_FACTOR = 1.5;
 var FABRICATOR_MAX_PROGRESS = 100;
 
-
+var UUMATTER_SELL_PRICE = 10000000;
 
 // var machines = { totalAutomators: 0, totalQuarries: 0, totalRecyclers: 0, totalFabricators: 0 };
 
@@ -56,17 +55,29 @@ function Machine(name, startCost, costIncFactor) {
   };
 }
 
-var automator = new Machine(AUTOMATOR_STRING_NAME, AUTOMATOR_START_COST, AUTOMATOR_COST_INCREASING_FACTOR);
+var automator = new Machine(
+  AUTOMATOR_STRING_NAME,
+  AUTOMATOR_START_COST,
+  AUTOMATOR_COST_INCREASING_FACTOR
+);
 automator.update = function() {
   totalItems += updateValue(totalAutomators * 2);
 };
 
-var quarry = new Machine(QUARRY_STRING_NAME, QUARRY_START_COST, QUARRY_COST_INCREASING_FACTOR);
+var quarry = new Machine(
+  QUARRY_STRING_NAME,
+  QUARRY_START_COST,
+  QUARRY_COST_INCREASING_FACTOR
+);
 quarry.update = function() {
   totalItems += updateValue(totalQuarries * 5);
 };
 
-var recycler = new Machine(RECYCLER_STRING_NAME, RECYCLER_START_COST, RECYCLER_COST_INCREASING_FACTOR);
+var recycler = new Machine(
+  RECYCLER_STRING_NAME,
+  RECYCLER_START_COST,
+  RECYCLER_COST_INCREASING_FACTOR
+);
 recycler.update = function() {
   var itemsPerScrap = updateValue(10 * totalRecyclers);
   if (totalItems - itemsPerScrap > 0) {
@@ -75,7 +86,11 @@ recycler.update = function() {
   }
 };
 
-var fabricator = new Machine(FABRICATOR_STRING_NAME, FABRICATOR_START_COST, FABRICATOR_COST_INCREASING_FACTOR);
+var fabricator = new Machine(
+  FABRICATOR_STRING_NAME,
+  FABRICATOR_START_COST,
+  FABRICATOR_COST_INCREASING_FACTOR
+);
 fabricator.update = function() {
   var scrapsToMatter = updateValue(2 * totalFabricators);
   if (totalScraps - scrapsToMatter > 0) {
@@ -92,9 +107,21 @@ function updateValue(factor) {
   return factor * deltaTime;
 }
 
-function add(numb) {
-  totalItems += parseInt(numb);
+// ******* ADD FUNCTIONS *******
+
+function addItem(value) {
+  totalItems += parseInt(value);
 }
+
+function addScrap(value) {
+  totalScraps += parseInt(value);
+}
+
+function addUUmatter(value) {
+  totalUUmatter += parseInt(value);
+}
+
+// ******** BUY/SELL FUNCTIONS *********
 
 function buyAutomator(number) {
   totalAutomators = automator.buy(number, totalAutomators);
@@ -110,6 +137,15 @@ function buyRecycler(number) {
 
 function buyFabricator(number) {
   totalFabricators = fabricator.buy(number, totalFabricators);
+}
+
+function sellUUmatter(number) {
+  if (totalUUmatter > 0) {
+    if (totalUUmatter >= number) {
+      addItem(UUMATTER_SELL_PRICE);
+      totalUUmatter -= number;
+    }
+  }
 }
 
 function getAvailableMachines(machine, machines) {
@@ -140,6 +176,7 @@ function resetGame() {
   totalQuarries = 0;
   totalRecyclers = 0;
   totalFabricators = 0;
+  time = 0;
 }
 
 function updateMachines() {
@@ -153,34 +190,52 @@ function updateScreenValues() {
   document.getElementById("totalItems").innerHTML = Math.floor(totalItems);
   document.getElementById("totalScraps").innerHTML = Math.floor(totalScraps);
   document.getElementById("totalUUmatter").innerHTML = totalUUmatter;
-  
+
   document.getElementById("time").innerHTML = parseFloat(time).toFixed(3);
-  
+
   document.getElementById("totalAutomators").innerHTML = totalAutomators;
   document.getElementById("totalQuarries").innerHTML = totalQuarries;
   document.getElementById("totalRecyclers").innerHTML = totalRecyclers;
   document.getElementById("totalFabricators").innerHTML = totalFabricators;
 
-  document.getElementById("automatorCost").innerHTML = automator.cost(totalAutomators);
+  document.getElementById("automatorCost").innerHTML = automator.cost(
+    totalAutomators
+  );
   document.getElementById("quarryCost").innerHTML = quarry.cost(totalQuarries);
-  document.getElementById("recyclerCost").innerHTML = recycler.cost(totalRecyclers);
-  document.getElementById("fabricatorCost").innerHTML = fabricator.cost(totalFabricators);
+  document.getElementById("recyclerCost").innerHTML = recycler.cost(
+    totalRecyclers
+  );
+  document.getElementById("fabricatorCost").innerHTML = fabricator.cost(
+    totalFabricators
+  );
 
-  document.getElementById("availableAutomators").innerHTML = getAvailableMachines(automator, totalAutomators);
-  document.getElementById("availableQuarries").innerHTML = getAvailableMachines(quarry,totalQuarries);
-  document.getElementById("availableRecyclers").innerHTML = getAvailableMachines(recycler, totalRecyclers);
-  document.getElementById("availableFabricators").innerHTML = getAvailableMachines(fabricator, totalFabricators);
+  document.getElementById(
+    "availableAutomators"
+  ).innerHTML = getAvailableMachines(automator, totalAutomators);
+  document.getElementById("availableQuarries").innerHTML = getAvailableMachines(
+    quarry,
+    totalQuarries
+  );
+  document.getElementById(
+    "availableRecyclers"
+  ).innerHTML = getAvailableMachines(recycler, totalRecyclers);
+  document.getElementById(
+    "availableFabricators"
+  ).innerHTML = getAvailableMachines(fabricator, totalFabricators);
 
-  document.getElementById("fabricatorProgress").innerHTML = Math.floor(fabricator.progress);
+  document.getElementById("fabricatorProgress").innerHTML = Math.floor(
+    fabricator.progress
+  );
+
+  document.getElementById("uumatterSellPrice").innerHTML = UUMATTER_SELL_PRICE;
 }
 
 function step() {
-	time += deltaTime;
+  time += deltaTime;
 }
 
 window.setInterval(function() {
   updateMachines();
   updateScreenValues();
   step();
-
 }, deltaTime);
