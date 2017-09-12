@@ -1,10 +1,12 @@
 /// Simulation variables
 var time = 0.0;
 const deltaTime = 1.0 / 250.0;
+var incFactor = 1.0;
 
 /// Game variables
 var totalAutomators = 0;
 var totalQuarries = 0;
+var totalUndergroundMiners = 0;
 var totalRecyclers = 0;
 var totalFabricators = 0;
 
@@ -20,6 +22,10 @@ var AUTOMATOR_COST_INCREASING_FACTOR = 1.1;
 var QUARRY_STRING_NAME = "Quarry";
 var QUARRY_START_COST = 100;
 var QUARRY_COST_INCREASING_FACTOR = 1.15;
+
+var UNDERGROUNDMINER_STRING_NAME = "Quarry";
+var UNDERGROUNDMINER_START_COST = 1000;
+var UNDERGROUNDMINER_COST_INCREASING_FACTOR = 1.3;
 
 var RECYCLER_STRING_NAME = "Recycler";
 var RECYCLER_START_COST = 1000;
@@ -73,6 +79,15 @@ quarry.update = function() {
   totalItems += updateValue(totalQuarries * 5);
 };
 
+var undergroundMiner = new Machine(
+  UNDERGROUNDMINER_STRING_NAME,
+  UNDERGROUNDMINER_START_COST,
+  UNDERGROUNDMINER_COST_INCREASING_FACTOR
+);
+undergroundMiner.update = function() {
+  totalItems += updateValue(totalUndergroundMiners * 10);
+};
+
 var recycler = new Machine(
   RECYCLER_STRING_NAME,
   RECYCLER_START_COST,
@@ -104,7 +119,7 @@ fabricator.update = function() {
 };
 
 function updateValue(factor) {
-  return factor * deltaTime;
+  return factor * deltaTime * incFactor;
 }
 
 // ******* ADD FUNCTIONS *******
@@ -129,6 +144,10 @@ function buyAutomator(number) {
 
 function buyQuarry(number) {
   totalQuarries = quarry.buy(number, totalQuarries);
+}
+
+function buyUndergroundMiner(number) {
+  totalUndergroundMiners = undergroundMiner.buy(number, totalUndergroundMiners);
 }
 
 function buyRecycler(number) {
@@ -174,6 +193,7 @@ function resetGame() {
 
   totalAutomators = 0;
   totalQuarries = 0;
+  totalUndergroundMiners = 0;
   totalRecyclers = 0;
   totalFabricators = 0;
   time = 0;
@@ -182,6 +202,7 @@ function resetGame() {
 function updateMachines() {
   automator.update();
   quarry.update();
+  undergroundMiner.update();
   recycler.update();
   fabricator.update();
 }
@@ -195,37 +216,23 @@ function updateScreenValues() {
 
   document.getElementById("totalAutomators").innerHTML = totalAutomators;
   document.getElementById("totalQuarries").innerHTML = totalQuarries;
+  document.getElementById("totalUndergroundMiners").innerHTML = totalUndergroundMiners;
   document.getElementById("totalRecyclers").innerHTML = totalRecyclers;
   document.getElementById("totalFabricators").innerHTML = totalFabricators;
 
-  document.getElementById("automatorCost").innerHTML = automator.cost(
-    totalAutomators
-  );
+  document.getElementById("automatorCost").innerHTML = automator.cost(totalAutomators);
   document.getElementById("quarryCost").innerHTML = quarry.cost(totalQuarries);
-  document.getElementById("recyclerCost").innerHTML = recycler.cost(
-    totalRecyclers
-  );
-  document.getElementById("fabricatorCost").innerHTML = fabricator.cost(
-    totalFabricators
-  );
+  document.getElementById("undergroundMinerCost").innerHTML = undergroundMiner.cost(totalUndergroundMiners);
+  document.getElementById("recyclerCost").innerHTML = recycler.cost(totalRecyclers);
+  document.getElementById("fabricatorCost").innerHTML = fabricator.cost(totalFabricators);
 
-  document.getElementById(
-    "availableAutomators"
-  ).innerHTML = getAvailableMachines(automator, totalAutomators);
-  document.getElementById("availableQuarries").innerHTML = getAvailableMachines(
-    quarry,
-    totalQuarries
-  );
-  document.getElementById(
-    "availableRecyclers"
-  ).innerHTML = getAvailableMachines(recycler, totalRecyclers);
-  document.getElementById(
-    "availableFabricators"
-  ).innerHTML = getAvailableMachines(fabricator, totalFabricators);
+  document.getElementById("availableAutomators").innerHTML = getAvailableMachines(automator, totalAutomators);
+  document.getElementById("availableQuarries").innerHTML = getAvailableMachines(quarry, totalQuarries);
+  document.getElementById("availableUndergroundMiners").innerHTML = getAvailableMachines(undergroundMiner, totalUndergroundMiners);
+  document.getElementById("availableRecyclers").innerHTML = getAvailableMachines(recycler, totalRecyclers);
+  document.getElementById("availableFabricators").innerHTML = getAvailableMachines(fabricator, totalFabricators);
 
-  document.getElementById("fabricatorProgress").innerHTML = Math.floor(
-    fabricator.progress
-  );
+  document.getElementById("fabricatorProgress").innerHTML = Math.floor(fabricator.progress);
 
   document.getElementById("uumatterSellPrice").innerHTML = UUMATTER_SELL_PRICE;
 }

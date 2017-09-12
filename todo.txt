@@ -4,3 +4,7 @@ Ideas:
 
 Fixes:
 |_-> Add Web Workers to the incremental game to allow continual calculations in the background
+|_-> Also perhaps make more generic  functions, such as sell and buy 
+|_-> Integrate the constants into the machine classes or create json/xml files
+|_-> Show items produced per second
+|_-> Add percentage increase via buttons (upgrades)
