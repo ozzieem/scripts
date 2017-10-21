@@ -23,7 +23,12 @@ function openINC() {
 	openHTMLinCenter("incremental/incremental.html");
 }
 
+function openFractal() {
+	openHTMLinCenter("fractal/fractal.html");
+}
+
 // DEBUG
 window.onload = function() {
-  openINC();
+  //openINC();
+  openFractal();
 };
