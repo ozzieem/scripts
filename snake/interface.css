@@ -1,0 +1,28 @@
+  #gameCanvas {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  }
+
+  #score {
+	text-align: center;
+	font-size: 50px;
+	font-family: 'Antic Slab', serif;
+  }
+  
+  #speed {
+	text-align: center;
+	font-size: 50px;
+	font-family: 'Antic Slab', serif;
+  }
+  
+  #status {
+	text-align: center;
+	font-size: 50px;
+	font-family: 'Antic Slab', serif;
+  }
+  
+  .data {
+	display: inline-block;
+  }

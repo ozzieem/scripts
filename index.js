@@ -27,8 +27,12 @@ function openFractal() {
 	openHTMLinCenter("fractal/fractal.html");
 }
 
+function openSnakeGame() {
+	openHTMLinCenter("snake/snake.html");
+}
+
 // DEBUG
 window.onload = function() {
   //openINC();
-  openFractal();
+  openSnakeGame();
 };
