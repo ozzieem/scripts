@@ -31,8 +31,13 @@ function openSnakeGame() {
 	openHTMLinCenter("snake/snake.html");
 }
 
+function openRectangleEater() {
+	openHTMLinCenter("rectangle_eater/rectangle_eater.html");
+}
+
 // DEBUG
 window.onload = function() {
   //openINC();
-  openSnakeGame();
+  //openSnakeGame();
+  openRectangleEater();
 };
