@@ -16,15 +16,15 @@
 
 		<main id="center" class="column">
 			<h3>Buy Machine</h3>
-			<button onclick="buyAutomator(100)">Automator <span id="availableAutomators">0</span></button> Cost: <span id="automatorCost">0</span>			items - Produces items
+			<button onclick="buyAutomator(100)">Automator <span id="availableAutomators">0</span></button> Cost: <span id="automatorCost">0</span> items - Produces <span id="automatorProductionRate">0</span> item/s.
 			<br>
-			<button onclick="buyQuarry(100)">Quarry <span id="availableQuarries">0</span></button> Cost: <span id="quarryCost">0</span>			items - Produces items
+			<button onclick="buyQuarry(100)">Quarry <span id="availableQuarries">0</span></button> Cost: <span id="quarryCost">0</span> items - Produces <span id="quarryProductionRate">0</span> item/s.
 			<br>
-			<button onclick="buyUndergroundMiner(100)">Underground Miner <span id="availableUndergroundMiners">0</span></button> Cost: <span id="undergroundMinerCost">0</span> items - Produces items
+			<button onclick="buyUndergroundMiner(100)">Underground Miner <span id="availableUndergroundMiners">0</span></button> Cost: <span id="undergroundMinerCost">0</span> items - Produces <span id="undergroundMinerProductionRate">0</span> item/s.
+			<br>			
+			<button onclick="buyRecycler(100)">Recycler <span id="availableRecyclers">0</span></button> Cost: <span id="recyclerCost">0</span> items - Produces <span id="recyclerScrapProductionRate">0</span> scrap/s. Consumes: <span id="recyclerItemsConsumptionRate">0</span> item/s.
 			<br>
-			<button onclick="buyRecycler(100)">Recycler <span id="availableRecyclers">0</span></button> Cost: <span id="recyclerCost">0</span>			items - Produces 1 scrap. Consumes: 10 items
-			<br>
-			<button onclick="buyFabricator(100)">Fabricator <span id="availableFabricators">0</span></button> Cost: <span id="fabricatorCost">0</span>			items - Produces 1 UU-matter. Consumes: 10 scraps
+			<button onclick="buyFabricator(100)">Fabricator <span id="availableFabricators">0</span></button> Cost: <span id="fabricatorCost">0</span> items - Produces <span id="fabricatorUuMatterProductionRate">0</span> UU-matter/s. Consumes: <span id="fabricatorScrapConsumptionRate">0</span> scrap/s.
 			<br>
 			<button onclick="sellUUmatter(100)">UU-matter </button> Sell: <span id="uumatterSellPrice">0</span>
 		</main>

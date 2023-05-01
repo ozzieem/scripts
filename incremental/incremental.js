@@ -18,23 +18,30 @@ var totalUUmatter = 0;
 var AUTOMATOR_STRING_NAME = "Automator";
 var AUTOMATOR_START_COST = 10;
 var AUTOMATOR_COST_INCREASING_FACTOR = 1.1;
+var AUTOMATOR_PRODUCTION_RATE = 5.0;
 
 var QUARRY_STRING_NAME = "Quarry";
 var QUARRY_START_COST = 100;
 var QUARRY_COST_INCREASING_FACTOR = 1.15;
+var QUARRY_PRODUCTION_RATE = 10.0;
 
 var UNDERGROUNDMINER_STRING_NAME = "Quarry";
 var UNDERGROUNDMINER_START_COST = 1000;
-var UNDERGROUNDMINER_COST_INCREASING_FACTOR = 1.3;
+var UNDERGROUNDMINER_COST_INCREASING_FACTOR = 1.20;
+var UNDERGROUNDMINER_PRODUCTION_RATE = 20.0;
 
 var RECYCLER_STRING_NAME = "Recycler";
 var RECYCLER_START_COST = 1000;
 var RECYCLER_COST_INCREASING_FACTOR = 1.2;
+var RECYCLER_SCRAP_PRODUCTION_RATE = 1.0;
+var RECYCLER_ITEMS_CONSUMPTION_PER_SCRAP = 10.0;
 
 var FABRICATOR_STRING_NAME = "Fabricator";
 var FABRICATOR_START_COST = 10000;
 var FABRICATOR_COST_INCREASING_FACTOR = 1.5;
 var FABRICATOR_MAX_PROGRESS = 100;
+var FABRICATOR_SCRAP_TO_UU_MATTER = 10.0;
+var FABRICATOR_UU_MATTER_PRODUCTION_RATE = 1.0;
 
 var UUMATTER_SELL_PRICE = 10000000;
 
@@ -67,7 +74,7 @@ var automator = new Machine(
   AUTOMATOR_COST_INCREASING_FACTOR
 );
 automator.update = function() {
-  totalItems += updateValue(totalAutomators * 2);
+  totalItems += updateValue(totalAutomators * AUTOMATOR_PRODUCTION_RATE);
 };
 
 var quarry = new Machine(
@@ -76,7 +83,7 @@ var quarry = new Machine(
   QUARRY_COST_INCREASING_FACTOR
 );
 quarry.update = function() {
-  totalItems += updateValue(totalQuarries * 5);
+  totalItems += updateValue(totalQuarries * QUARRY_PRODUCTION_RATE);
 };
 
 var undergroundMiner = new Machine(
@@ -85,7 +92,7 @@ var undergroundMiner = new Machine(
   UNDERGROUNDMINER_COST_INCREASING_FACTOR
 );
 undergroundMiner.update = function() {
-  totalItems += updateValue(totalUndergroundMiners * 10);
+  totalItems += updateValue(totalUndergroundMiners * UNDERGROUNDMINER_PRODUCTION_RATE);
 };
 
 var recycler = new Machine(
@@ -94,7 +101,7 @@ var recycler = new Machine(
   RECYCLER_COST_INCREASING_FACTOR
 );
 recycler.update = function() {
-  var itemsPerScrap = updateValue(10 * totalRecyclers);
+  var itemsPerScrap = updateValue(RECYCLER_SCRAP_PRODUCTION_RATE * totalRecyclers);
   if (totalItems - itemsPerScrap > 0) {
     totalScraps += updateValue(totalRecyclers);
     totalItems -= updateValue(itemsPerScrap);
@@ -107,13 +114,13 @@ var fabricator = new Machine(
   FABRICATOR_COST_INCREASING_FACTOR
 );
 fabricator.update = function() {
-  var scrapsToMatter = updateValue(2 * totalFabricators);
+  var scrapsToMatter = updateValue(FABRICATOR_SCRAP_TO_UU_MATTER * totalFabricators);
   if (totalScraps - scrapsToMatter > 0) {
     totalScraps -= scrapsToMatter;
     fabricator.progress += parseFloat(0.1 * totalFabricators);
   }
   if (fabricator.progress >= FABRICATOR_MAX_PROGRESS) {
-    totalUUmatter++;
+    totalUUmatter+=FABRICATOR_UU_MATTER_PRODUCTION_RATE;
     fabricator.progress = 0;
   }
 };
@@ -235,6 +242,16 @@ function updateScreenValues() {
   document.getElementById("fabricatorProgress").innerHTML = Math.floor(fabricator.progress);
 
   document.getElementById("uumatterSellPrice").innerHTML = UUMATTER_SELL_PRICE;
+
+  // Update production/consumption rates
+  document.getElementById("automatorProductionRate").innerHTML = (totalAutomators * AUTOMATOR_PRODUCTION_RATE);
+  document.getElementById("quarryProductionRate").innerHTML = (totalQuarries * QUARRY_PRODUCTION_RATE);
+  document.getElementById("undergroundMinerProductionRate").innerHTML = (totalUndergroundMiners * UNDERGROUNDMINER_PRODUCTION_RATE);
+  document.getElementById("recyclerScrapProductionRate").innerHTML = (totalRecyclers * RECYCLER_SCRAP_PRODUCTION_RATE);
+  document.getElementById("recyclerItemsConsumptionRate").innerHTML = (totalRecyclers * RECYCLER_ITEMS_CONSUMPTION_PER_SCRAP * RECYCLER_SCRAP_PRODUCTION_RATE);
+  document.getElementById("fabricatorUuMatterProductionRate").innerHTML = (totalFabricators * FABRICATOR_UU_MATTER_PRODUCTION_RATE);
+  document.getElementById("fabricatorScrapConsumptionRate").innerHTML = (totalFabricators * FABRICATOR_SCRAP_TO_UU_MATTER);
+
 }
 
 function step() {
