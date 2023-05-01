@@ -214,6 +214,15 @@ function updateMachines() {
   fabricator.update();
 }
 
+function getSelectedAutomatorQuantity() {
+  const radioButtons = document.getElementsByName("buyQuantity");
+  for (let i = 0; i < radioButtons.length; i++) {
+    if (radioButtons[i].checked) {
+      return parseInt(radioButtons[i].value);
+    }
+  }
+}
+
 function updateScreenValues() {
   document.getElementById("totalItems").innerHTML = Math.floor(totalItems);
   document.getElementById("totalScraps").innerHTML = Math.floor(totalScraps);
